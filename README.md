@@ -53,6 +53,104 @@ The solution followed an end-to-end analytical pipeline:
 → Multidimensional anomaly scoring
 → Anomaly-based segmentation
 
+### Project Architecture
+
+```text
+┌───────────────────────────────┐
+│        SME Data Sources       │
+│                               │
+│  Customer / Relationship Data │
+│  Transaction Data             │
+│  Account Data                 │
+│  Balance Data                 │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│        SQL Data Pipeline      │
+│                               │
+│  • Population Definition      │
+│  • Currency Normalization     │
+│  • Monthly Aggregation        │
+│  • Feature Engineering        │
+│  • Latest Snapshot Selection  │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│       Analytical Dataset      │
+│                               │
+│ relationship × account ×      │
+│ month × year                  │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│      Python / Pandas          │
+│                               │
+│  Relationship-Level Analysis  │
+│  Historical Baselines         │
+│  Behavioral Deviations        │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│    Statistical Detection      │
+│                               │
+│  Robust Z-Scores              │
+│  99th Percentile Signals      │
+│  Correlation Analysis         │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│    Behavioral Dimensions      │
+│                               │
+│  Activity Intensity           │
+│  Funds Movement               │
+│  Transaction Characteristics  │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│     Emerging Behaviour        │
+│                               │
+│  Historical vs Current        │
+│  New Activity Signals         │
+│  Emergence Signal Count       │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│ Multidimensional Anomaly Score│
+│                               │
+│  Weighted Behavioral Score    │
+│  + Theme Count                │
+│  + Emergence Signals          │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│   Behavioral Segmentation     │
+│                               │
+│  Normal                       │
+│  Emerging Behaviour           │
+│  Significant Anomaly          │
+│  High Multidimensional        │
+│  Critical Multidimensional    │
+└───────────────┬───────────────┘
+                │
+                ▼
+┌───────────────────────────────┐
+│ Investigation Prioritization  │
+│                               │
+│  Analyst Review               │
+│  Business Context Validation  │
+│  Further Investigation        │
+└───────────────────────────────┘
+```
+
+
 ### Key Outcome
 
 The framework analyzed **29,445 SME relationship records** and classified behavioral patterns into five analytical segments:
