@@ -1212,5 +1212,90 @@ Behavioral Anomaly Segments
 Investigation Prioritization
 ```
 
+
+## 13. Results & Interpretation
+
+The statistical framework produced a relationship-level behavioral anomaly view across **29,445 SME relationships**.
+
+Rather than producing a single binary anomaly flag, the framework differentiated relationships according to the breadth and emergence of unusual behavior.
+
+### 13.1 Overall Segmentation
+
+The final distribution was:
+
+| Segment                           | Relationships | Interpretation                                                       |
+| --------------------------------- | ------------: | -------------------------------------------------------------------- |
+| Normal                            |        28,130 | No material multidimensional anomaly signal                          |
+| Emerging Behaviour                |           997 | Developing or newly elevated behavioral signals                      |
+| Significant Anomaly               |           231 | Multiple anomalous dimensions with stronger emergence evidence       |
+| Critical Multidimensional Anomaly |            77 | Three anomalous dimensions with emerging behavior                    |
+| High Multidimensional Anomaly     |            10 | Three anomalous dimensions without the specified emergence condition |
+| **Total**                         |    **29,445** |                                                                      |
+
+The framework therefore reduced a broad SME population into a smaller set of relationships exhibiting increasingly differentiated behavioral signals.
+
+### 13.2 What the Results Demonstrate
+
+The analysis demonstrated that anomalous behavior should not be evaluated purely through absolute transaction size.
+
+A relationship can become analytically important because of:
+
+* A sudden change from its historical behavior
+* Unusually high transaction intensity
+* Unusually high funds movement
+* Unusual transaction characteristics
+* Multiple behavioral dimensions changing simultaneously
+* Newly emerging activity combined with existing anomaly signals
+
+This provided a more contextual view of unusual SME behavior.
+
+### 13.3 From Detection to Investigation Prioritization
+
+The output can be used as a prioritization layer for downstream analytical or investigative processes.
+
+For example:
+
+```text id="z2l5q8"
+Large SME Population
+        ↓
+Behavioral Anomaly Framework
+        ↓
+Prioritized Relationship Segments
+        ↓
+Analyst Review
+        ↓
+Business Context Validation
+        ↓
+Further Investigation Where Appropriate
+```
+
+The statistical framework therefore acts as an **early-warning and prioritization mechanism**, rather than replacing human investigation or existing control processes.
+
+### 13.4 Key Analytical Insight
+
+One of the central findings from the framework was that **behavioral change and multidimensional unusualness provide different types of information**.
+
+A relationship can be:
+
+* Consistently high but behaviorally stable
+* Newly changing but not extreme across multiple dimensions
+* Extreme across several dimensions
+* Both multidimensionally unusual and newly emerging
+
+Combining these perspectives creates a richer behavioral representation than using a single threshold or isolated transaction metric.
+
+### 13.5 Practical Value
+
+The framework provides a structured way to move from:
+
+> **"Which transactions are large?"**
+
+toward:
+
+> **"Which relationships are behaving unusually relative to their historical patterns, across multiple behavioral dimensions, and potentially developing new patterns?"**
+
+This makes the output more suitable for analytical investigation prioritization and further risk assessment.
+
+
 This created an end-to-end statistical framework for identifying relationships exhibiting unusual or newly emerging transaction behavior.
 
