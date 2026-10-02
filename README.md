@@ -970,4 +970,133 @@ Therefore, emergence was treated as an **investigation-prioritization signal**, 
 
 > **Analytical principle:** Anomaly detection should consider not only how unusual current behavior is, but also whether the behavior represents a meaningful change from the customer's established pattern.
 
+## 11. Multidimensional Anomaly Score
+
+The preceding stages generated several complementary signals:
+
+* Statistical deviation
+* Extreme-tail behavior
+* Activity Intensity
+* Funds Movement
+* Transaction Characteristics
+* Emerging behavioral changes
+
+The next step was to combine these signals into a single **multidimensional anomaly score**.
+
+### 11.1 Why a Multidimensional Score?
+
+A relationship may appear unusual because of one individual factor.
+
+However, stronger analytical evidence can emerge when unusual behavior occurs across multiple distinct behavioral dimensions.
+
+The scoring framework therefore considered three major dimensions:
+
+```text id="r6j3zq"
+Activity Intensity
+        │
+        ├──────────────┐
+        │              │
+Funds Movement   Transaction Characteristics
+        │              │
+        └──────┬───────┘
+               ↓
+    Multidimensional
+      Anomaly Score
+```
+
+### 11.2 Weighted Behavioral Dimensions
+
+The three behavioral dimensions were assigned calibrated weights that together represented **100% of the multidimensional score**.
+
+Conceptually:
+
+```text id="0n1z3v"
+Multidimensional Score
+=
+(Activity Score × Weight)
++
+(Funds Movement Score × Weight)
++
+(Transaction Characteristics Score × Weight)
+```
+
+The weights were designed to balance the contribution of the three behavioral dimensions rather than allowing a single highly variable feature to dominate the final score.
+
+The exact production weights are intentionally not reproduced in this public repository.
+
+### 11.3 Why Weight the Dimensions?
+
+The weighting framework provided two advantages.
+
+**1. Controlled contribution**
+
+Each behavioral dimension had a defined contribution to the final score.
+
+**2. Reduced dependence on individual variables**
+
+Because related transaction variables had already been grouped into behavioral themes, the score operated at the dimension level rather than simply adding every available feature together.
+
+This helped reduce the risk of over-counting highly related signals.
+
+### 11.4 Combining Breadth and Emergence
+
+The multidimensional score was evaluated alongside:
+
+```text id="l8t6pc"
+anomaly_theme_count
+```
+
+and:
+
+```text id="8x4j5w"
+emergence_signal_count
+```
+
+This produced three complementary perspectives:
+
+| Component           | Question                                                           |
+| ------------------- | ------------------------------------------------------------------ |
+| **Anomaly Score**   | How strong is the multidimensional unusualness?                    |
+| **Theme Count**     | Across how many behavioral dimensions is the relationship unusual? |
+| **Emergence Count** | How many newly developing behavioral signals are present?          |
+
+This was important because a single numerical score alone can hide the reason why a relationship was prioritized.
+
+### 11.5 Interpretable Scoring
+
+The final framework was designed so that an analyst could trace a relationship's anomaly signal back to its contributing behavioral dimensions.
+
+For example:
+
+```text id="j6c9za"
+Relationship
+     ↓
+High Activity Intensity
+     ↓
+High Funds Movement
+     ↓
+Emerging Credit Activity
+     ↓
+Elevated Multidimensional Score
+     ↓
+Higher Investigation Priority
+```
+
+This provided greater interpretability than relying exclusively on a black-box anomaly model.
+
+### 11.6 Investigation-Prioritization Framework
+
+The multidimensional anomaly score was **not treated as a probability of fraud or a definitive AML classification**.
+
+Instead, it was used as an analytical prioritization mechanism.
+
+The framework was designed to answer:
+
+> **Which relationships demonstrate the strongest combination of unusual, multidimensional, and/or newly emerging behavior and may therefore warrant further investigation?**
+
+This distinction is important because statistical unusualness does not automatically imply inappropriate or illegal activity.
+
+> **Analytical principle:** A useful anomaly framework should combine multiple independent or complementary dimensions while remaining interpretable enough to explain why a relationship was prioritized.
+
+
 
