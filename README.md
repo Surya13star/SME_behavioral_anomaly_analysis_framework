@@ -837,5 +837,137 @@ The goal was therefore not simply to find the customers with the largest transac
 
 The robust statistical layer therefore formed one component of the broader anomaly detection framework, which was later combined with percentile-based signals, correlation-aware behavioral dimensions, and emergence indicators.
 
+## 10. Emergence Signals
+
+A relationship can exhibit high transaction activity without necessarily representing a meaningful change in behavior.
+
+For example, a customer that has historically maintained high transaction volumes may remain statistically large while still behaving consistently with its established pattern.
+
+To capture a different type of signal, the framework introduced **emergence indicators**.
+
+The objective was to identify behavioral patterns that were **newly developing or showing a sudden increase relative to historical behavior**.
+
+### 10.1 Historical vs Current Behavior
+
+For each selected behavioral factor, current-period behavior was compared with the relationship's historical baseline.
+
+Conceptually:
+
+```text
+Historical Behavior
+        ↓
+Typical Baseline
+        ↓
+Current Month
+        ↓
+Significant Increase?
+        ↓
+Emergence Signal
+```
+
+Examples included:
+
+* New or unusually high credit activity
+* New transaction activity
+* Sudden increase in transaction count
+* Sudden increase in transaction amounts
+* Other newly elevated behavioral measures
+
+### 10.2 Emergence Flags
+
+Binary indicators were created for selected newly elevated behaviors.
+
+For example:
+
+```text
+new_credit_activity = 1
+```
+
+when the relationship demonstrated a sufficiently elevated credit behavior relative to its historical pattern.
+
+Similarly:
+
+```text
+new_txn_activity = 1
+```
+
+when transaction activity showed a newly elevated pattern.
+
+The individual emergence indicators were then aggregated into an:
+
+```text
+emergence_signal_count
+```
+
+This represented the breadth of newly emerging behavioral changes observed for the relationship.
+
+### 10.3 Why Emergence Matters
+
+The emergence layer added an important dimension to the anomaly framework.
+
+Consider two relationships:
+
+```text
+Relationship A
+Historically high activity
+        ↓
+Currently high activity
+        ↓
+No major behavioral change
+```
+
+versus:
+
+```text
+Relationship B
+Historically moderate activity
+        ↓
+Sudden increase
+        ↓
+New behavioral pattern
+```
+
+Both may have high current activity, but the second relationship demonstrates a different behavioral characteristic: **change**.
+
+The framework therefore considered both:
+
+* **Magnitude of unusual behavior**
+* **Change from historical behavior**
+
+### 10.4 Combining Anomaly Breadth and Emergence
+
+The emergence signal count was later combined with the number of anomalous behavioral themes.
+
+Conceptually:
+
+```text
+Anomaly Theme Count
+        +
+Emergence Signal Count
+        ↓
+Behavioral Anomaly Severity
+```
+
+This allowed the framework to distinguish between:
+
+* A relationship that is unusual across multiple dimensions
+* A relationship that is developing new behavior
+* A relationship that is both multidimensionally unusual and showing emerging signals
+
+### 10.5 Interpretation
+
+An emergence signal does **not** imply that the underlying activity is illegitimate.
+
+A newly elevated behavior may have many legitimate explanations, including:
+
+* Business growth
+* Seasonal activity
+* New contracts or customers
+* Changes in operating patterns
+* One-off commercial events
+
+Therefore, emergence was treated as an **investigation-prioritization signal**, rather than a definitive risk classification.
+
+> **Analytical principle:** Anomaly detection should consider not only how unusual current behavior is, but also whether the behavior represents a meaningful change from the customer's established pattern.
 
 
