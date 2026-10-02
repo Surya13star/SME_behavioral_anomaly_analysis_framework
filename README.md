@@ -1099,4 +1099,118 @@ This distinction is important because statistical unusualness does not automatic
 > **Analytical principle:** A useful anomaly framework should combine multiple independent or complementary dimensions while remaining interpretable enough to explain why a relationship was prioritized.
 
 
+## 12. Final Behavioral Segmentation
+
+The final stage translated the statistical anomaly signals into an interpretable **behavioral anomaly segmentation**.
+
+The segmentation combined:
+
+* Multidimensional anomaly themes
+* `anomaly_theme_count`
+* `emergence_signal_count`
+* The overall multidimensional anomaly score
+
+The objective was to distinguish relationships based on the **breadth and emergence of unusual behavior**, rather than relying on a single transaction variable.
+
+### 12.1 Segmentation Logic
+
+The resulting framework classified relationships into five behavioral segments.
+
+| Behavioral Segment                    | Analytical Condition                                                          |
+| ------------------------------------- | ----------------------------------------------------------------------------- |
+| **Normal**                            | No material multidimensional anomaly signal                                   |
+| **Emerging Behaviour**                | At least one anomaly/emergence signal indicating developing unusual behavior  |
+| **Significant Anomaly**               | Two anomalous themes combined with multiple emergence signals                 |
+| **High Multidimensional Anomaly**     | Three anomalous behavioral themes without the specified emergence condition   |
+| **Critical Multidimensional Anomaly** | Three anomalous behavioral themes combined with at least one emergence signal |
+
+The more severe categories therefore required increasing evidence across **multiple behavioral dimensions and/or emerging behavior**.
+
+### 12.2 Relationship-Level Results
+
+The final analytical population contained:
+
+| Behavioral Segment                | Relationship Count |
+| --------------------------------- | -----------------: |
+| Normal                            |             28,130 |
+| Emerging Behaviour                |                997 |
+| Significant Anomaly               |                231 |
+| Critical Multidimensional Anomaly |                 77 |
+| High Multidimensional Anomaly     |                 10 |
+| **Total**                         |         **29,445** |
+
+These results demonstrate how the statistical framework converted a large relationship population into a smaller set of increasingly differentiated behavioral segments.
+
+### 12.3 Why Segmentation Was Used
+
+A simple binary classification such as:
+
+```text
+Normal / Anomaly
+```
+
+would lose useful information.
+
+The segmentation instead preserved different levels of behavioral evidence.
+
+For example:
+
+```text id="6v3v0q"
+Normal
+   ↓
+Emerging Behaviour
+   ↓
+Significant Anomaly
+   ↓
+High / Critical Multidimensional Anomaly
+```
+
+This provides an analyst with a more structured way to prioritize relationships for further review.
+
+### 12.4 Interpreting the Results
+
+The final segments should be interpreted as **behavioral anomaly segments**, not definitive fraud, AML, regulatory-breach, or misconduct classifications.
+
+A relationship classified into a higher anomaly segment simply demonstrated a stronger combination of statistically unusual and/or emerging behavioral signals under the framework.
+
+Further investigation would still be required to understand the underlying business context.
+
+Potential legitimate explanations could include:
+
+* Business expansion
+* Seasonal activity
+* Large commercial transactions
+* Changes in customer operating patterns
+* New business relationships
+* One-off events
+
+The analytical framework therefore provides **evidence for prioritization**, rather than a final determination.
+
+### 12.5 Analytical Outcome
+
+The overall framework transformed raw transactional observations into an interpretable sequence:
+
+```text id="4c8b5n"
+Raw Transactions
+       ↓
+Monthly Behavioral Features
+       ↓
+Historical Baselines
+       ↓
+Robust Statistical Deviation
+       ↓
+Extreme-Tail Signals
+       ↓
+Correlation-Aware Themes
+       ↓
+Emergence Signals
+       ↓
+Multidimensional Score
+       ↓
+Behavioral Anomaly Segments
+       ↓
+Investigation Prioritization
+```
+
+This created an end-to-end statistical framework for identifying relationships exhibiting unusual or newly emerging transaction behavior.
 
