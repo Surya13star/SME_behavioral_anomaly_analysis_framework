@@ -246,5 +246,121 @@ The SQL preparation layer incorporated several data-quality considerations:
 The resulting analytical dataset was then passed to Python/Pandas for statistical modelling.
 
 
+## 5. SQL Data Pipeline
+
+The analytical dataset was built through a modular SQL pipeline before being transferred to Python/Pandas for statistical analysis.
+
+The SQL layer focused on creating a consistent, analysis-ready dataset while preserving account-level behavioral information.
+
+### Pipeline Architecture
+
+```text
+Customer Population
+        ↓
+Transaction Extraction
+        ↓
+Currency Normalization
+        ↓
+Monthly Account-Level Aggregation
+        ↓
+Behavioral Feature Engineering
+        ↓
+Latest Account Status
+        ↓
+Latest Monthly Balance
+        ↓
+Final Analytical Dataset
+        ↓
+Python / Pandas
+```
+
+### 5.1 Customer Population
+
+The first stage defined the SME relationship population within the analysis period.
+
+Customer-level information was used to establish the relevant relationship population and provide contextual attributes for downstream analysis.
+
+The production population logic and internal source systems are intentionally excluded from this public repository.
+
+### 5.2 Transaction Normalization
+
+Transaction records were transformed into a consistent analytical format.
+
+Key processing included:
+
+* Standardizing relationship and account identifiers
+* Converting transaction dates into monthly analytical periods
+* Separating credit and debit activity
+* Normalizing supported currencies into a common monetary basis
+* Tracking transactions where currency conversion was unavailable
+* Removing inconsistencies in join keys through data standardization
+
+This created a consistent transaction-level foundation for subsequent aggregation.
+
+### 5.3 Monthly Behavioral Aggregation
+
+Transactions were aggregated to the primary SQL analytical grain:
+
+```text
+relationship × account × month × year
+```
+
+This preserved account-level behavioral information while retaining the relationship identifier required for downstream relationship-level analysis.
+
+The aggregation generated behavioural measures including:
+
+* Transaction count
+* Credit transaction count
+* Debit transaction count
+* Credit transaction amount
+* Debit transaction amount
+* Active days
+* Transaction frequency
+* Median transaction amount
+* Average transaction amount
+* Maximum transaction amount
+* Transaction volatility
+* Net flow
+* Unconverted currency count
+
+### 5.4 Latest Snapshot Selection
+
+Account status and balance information can contain multiple records for the same account and monthly period.
+
+To avoid duplicate or outdated observations, window functions were used to identify the latest available record for each account-month combination.
+
+Conceptually:
+
+```sql
+ROW_NUMBER() OVER (
+    PARTITION BY accountno, year, month
+    ORDER BY snapshot_timestamp DESC
+)
+```
+
+Only the latest applicable observation was retained for enrichment of the analytical dataset.
+
+### 5.5 Dataset Enrichment
+
+The monthly transaction features were then enriched with:
+
+* Customer/relationship attributes
+* Account status
+* Monthly balance information
+* Currency-related indicators
+
+The resulting dataset provided both behavioural and contextual information for each account-month observation.
+
+### 5.6 Extraction to Python
+
+The SQL extraction was performed in two controlled batches covering the required historical period.
+
+The resulting datasets were consolidated in Python/Pandas.
+
+Where relationship-level behavioural analysis was required, the account-level observations were subsequently aggregated to the relationship level in Python before statistical modelling.
+
+This separation between **SQL data modelling** and **Python statistical analysis** allowed the data preparation layer and analytical modelling layer to remain independently interpretable.
+
+> **Public Repository Note:** The SQL structure shown here represents the analytical methodology used in the project. Production table names, internal schemas, business-specific filters, proprietary mappings, and other confidential implementation details have been intentionally excluded.
 
 
