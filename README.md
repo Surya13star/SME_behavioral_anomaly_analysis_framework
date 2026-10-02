@@ -72,3 +72,69 @@ The resulting framework was designed to support **investigation prioritization b
 **SQL · Python · Pandas · Statistical Analysis · Robust Statistics · Anomaly Detection · Feature Engineering · Correlation Analysis**
 
 
+## Business Context & Analytical Objective
+
+### Why Traditional Thresholds Can Be Insufficient
+
+Transaction behavior can vary substantially across SME relationships because different businesses naturally operate at different scales and frequencies.
+
+For example, a high transaction volume may be completely normal for one relationship but highly unusual for another.
+
+Therefore, using only absolute thresholds such as:
+
+* Transaction amount > X
+* Transaction count > Y
+* Maximum transaction > Z
+
+can produce a large number of false signals and may fail to identify meaningful changes in an individual relationship's behavior.
+
+### Behavioral Baseline Approach
+
+The framework instead established a **historical behavioral baseline for each relationship** and evaluated subsequent behavior relative to that baseline.
+
+Conceptually:
+
+```text
+Historical Behavior
+        ↓
+Customer-specific Baseline
+        ↓
+Current Behavior
+        ↓
+Deviation from Historical Pattern
+        ↓
+Statistical Anomaly Signal
+```
+
+This changes the analytical question from:
+
+> "Is this customer large or highly active?"
+
+to:
+
+> **"Is this customer's current behavior unusually different from its established historical pattern?"**
+
+### Multidimensional Analysis
+
+A second objective was to avoid relying on a single transaction metric.
+
+An unusual transaction count, high monetary flow, or large individual transaction may each have legitimate explanations when considered independently.
+
+The framework therefore grouped related variables into three broader behavioral dimensions:
+
+1. **Activity Intensity** — how actively the relationship is transacting
+2. **Funds Movement** — the magnitude of credit and debit flows
+3. **Transaction Characteristics** — transaction size and volatility patterns
+
+The framework also incorporated **emergence signals** to distinguish established high activity from newly elevated behavior.
+
+### Analytical Objective
+
+The overall objective was therefore to build an interpretable framework that evaluates:
+
+**Magnitude + Historical Deviation + Behavioral Breadth + Emergence**
+
+rather than relying on a single threshold or isolated anomaly.
+
+
+
