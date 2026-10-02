@@ -136,5 +136,115 @@ The overall objective was therefore to build an interpretable framework that eva
 
 rather than relying on a single threshold or isolated anomaly.
 
+## Data & Data Model
+
+### Analytical Population
+
+The analysis focused on a defined population of **SME relationship customers** observed over a six-month historical period.
+
+The underlying data was extracted through SQL in **two controlled batches**, covering the required six-month analytical window, and subsequently consolidated in Python/Pandas for statistical analysis.
+
+### Data Sources
+
+The analytical dataset was constructed by combining information conceptually representing:
+
+* **Customer / Relationship data** — relationship identifiers and customer attributes
+* **Transaction data** — transaction-level activity, amounts, dates, currencies and credit/debit indicators
+* **Account data** — monthly account status information
+* **Balance data** — monthly ledger balance and currency information
+
+Internal banking table names and proprietary identifiers are intentionally excluded from this repository.
+
+### Analytical Data Flow
+
+```text
+Customer / Relationship Data
+            │
+            ├──────────────┐
+            │              │
+            ▼              ▼
+     Transaction Data   Account Data
+            │              │
+            ▼              │
+   Currency Normalization  │
+            │              │
+            ▼              │
+     Monthly Aggregation   │
+            │              │
+            └───────┬──────┘
+                    │
+                    ▼
+             Balance Data
+                    │
+                    ▼
+          Final Analytical Dataset
+                    │
+                    ▼
+             Python / Pandas
+                    │
+                    ▼
+          Statistical Analysis
+```
+
+### Analytical Grain
+
+The transaction data was initially aggregated into a **monthly account-level behavioural structure**, with relationship information retained for downstream relationship-level analysis.
+
+The monthly structure allowed the framework to compare behavioral patterns across time and establish historical baselines.
+
+### Core Behavioral Features
+
+The analytical dataset contained features representing four major aspects of SME behavior:
+
+#### 1. Transaction Activity
+
+* Transaction count
+* Credit transaction count
+* Debit transaction count
+* Active transaction days
+* Transaction frequency
+
+#### 2. Funds Movement
+
+* Credit transaction amount
+* Debit transaction amount
+* Net flow amount
+
+$$
+Net\ Flow = Credit\ Amount - Debit\ Amount
+$$
+
+#### 3. Transaction Characteristics
+
+* Median transaction amount
+* Average transaction amount
+* Maximum transaction amount
+* Transaction volatility
+
+#### 4. Account / Customer Context
+
+* Relationship identifier
+* Account identifier
+* Customer incorporation/date-of-birth attribute
+* Account status
+* Ledger balance
+* Currency
+* Unconverted currency count
+
+### Data Quality & Preparation Considerations
+
+The SQL preparation layer incorporated several data-quality considerations:
+
+* Standardization of transaction indicators
+* Trimming of join keys
+* Currency normalization
+* Handling of unsupported/unconverted currencies
+* Monthly aggregation
+* Latest-record selection from snapshot-style account and balance data
+* Prevention of duplicate monthly snapshots using window functions
+
+The resulting analytical dataset was then passed to Python/Pandas for statistical modelling.
+
+
 
 
