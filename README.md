@@ -693,6 +693,148 @@ The use of median, MAD, and robust deviation measures provided several advantage
 * Continuous measurement of behavioral unusualness
 * Greater interpretability than a purely black-box anomaly score
 
+## 9. Correlation-Aware Behavioral Dimensions
+
+A key challenge in multidimensional anomaly detection is that several behavioral variables may represent the same underlying activity.
+
+If highly correlated variables are treated as independent evidence, the anomaly score can unintentionally **double-count the same behavioral pattern**.
+
+### 9.1 Correlation Analysis
+
+Correlation analysis was performed across the key behavioral variables to understand relationships between transaction features.
+
+One notable relationship was observed between:
+
+```text id="4s1hkc"
+Credit Transaction Amount
+        ↕
+Debit Transaction Amount
+
+Correlation ≈ 0.98
+```
+
+This indicated that credit and debit transaction amounts were strongly related within the analyzed population.
+
+Therefore, independently treating unusually high credit and unusually high debit activity as two completely separate dimensions could exaggerate the apparent breadth of the anomaly.
+
+### 9.2 Behavioral Theme Construction
+
+To reduce this risk, related variables were grouped into broader behavioral dimensions.
+
+The framework used three major themes:
+
+| Behavioral Dimension            | Representative Signals                                | Behavioral Meaning                            |
+| ------------------------------- | ----------------------------------------------------- | --------------------------------------------- |
+| **Activity Intensity**          | Transaction count, active days, transaction frequency | How intensely the relationship is transacting |
+| **Funds Movement**              | Credit amount, debit amount, net flow                 | Scale and direction of monetary movement      |
+| **Transaction Characteristics** | Average amount, maximum amount, volatility            | Nature and magnitude of transaction behaviour |
+
+This transformed the analysis from a collection of individual variables into a smaller number of interpretable behavioral dimensions.
+
+### 9.3 Activity Intensity
+
+The Activity Intensity dimension captures unusually high transactional activity.
+
+Representative indicators included:
+
+* Transaction count
+* Active days
+* Transaction frequency
+
+A relationship with unusually high activity across these measures would therefore contribute evidence to the **Activity Intensity** theme rather than generating several unrelated anomaly signals.
+
+### 9.4 Funds Movement
+
+The Funds Movement dimension captures the scale of monetary movement through the relationship.
+
+Representative indicators included:
+
+* Credit transaction amount
+* Debit transaction amount
+* Net flow
+
+Credit and debit amounts were considered together because of their strong relationship in the observed data.
+
+This provided a more meaningful representation of overall funds movement than treating each monetary direction as an entirely independent anomaly dimension.
+
+### 9.5 Transaction Characteristics
+
+The Transaction Characteristics dimension focuses on the nature and scale of individual transactions.
+
+Representative indicators included:
+
+* Average transaction amount
+* Maximum transaction amount
+* Transaction volatility
+
+These measures capture a different aspect of behavior from transaction frequency or aggregate funds movement.
+
+For example, a relationship may not have exceptionally high transaction volume but may exhibit unusually large or volatile transactions.
+
+### 9.6 Theme-Level Anomaly Flags
+
+After evaluating the underlying factor-level signals, theme-level flags were created.
+
+Conceptually:
+
+```text id="m4c6fp"
+Activity Intensity anomaly
+        ↓
+high_activity_flag = 1
+
+Funds Movement anomaly
+        ↓
+high_funds_movement_flag = 1
+
+Transaction Characteristics anomaly
+        ↓
+high_transaction_characteristics_flag = 1
+```
+
+A theme was flagged when its corresponding behavioral score reached the defined extreme threshold.
+
+The three theme flags were then combined:
+
+```text id="n0b8rj"
+anomaly_theme_count
+=
+high_activity_flag
++
+high_funds_movement_flag
++
+high_transaction_characteristics_flag
+```
+
+This produced a relationship-level measure ranging from:
+
+```text id="y3j8k1"
+0 → No anomalous behavioral themes
+1 → One anomalous behavioral theme
+2 → Two anomalous behavioral themes
+3 → Three anomalous behavioral themes
+```
+
+### 9.7 Why the Theme Approach Matters
+
+The resulting framework distinguishes between:
+
+**Single-dimensional unusual behavior**
+
+> A relationship is unusual in one behavioral dimension.
+
+and
+
+**Multi-dimensional unusual behavior**
+
+> A relationship simultaneously exhibits unusual behavior across multiple distinct dimensions.
+
+This distinction became important for the final anomaly prioritization framework.
+
+The goal was therefore not simply to find the customers with the largest transactions, but to identify relationships where **multiple aspects of behavioral activity deviated from their expected patterns**.
+
+> **Analytical principle:** Correlated variables should not automatically be interpreted as independent evidence. Grouping related signals into behavioral dimensions provides a more interpretable and less redundant anomaly framework.
+
+
 The robust statistical layer therefore formed one component of the broader anomaly detection framework, which was later combined with percentile-based signals, correlation-aware behavioral dimensions, and emergence indicators.
 
 
