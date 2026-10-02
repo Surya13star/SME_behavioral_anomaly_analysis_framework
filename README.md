@@ -579,4 +579,121 @@ The use of median, MAD, and robust deviation measures provided several advantage
 
 The robust statistical layer therefore formed one component of the broader anomaly detection framework, which was later combined with percentile-based signals, correlation-aware behavioral dimensions, and emergence indicators.
 
+## 7. Robust Z-Score Methodology
+
+Traditional Z-scores measure how far an observation is from the population mean in units of standard deviation:
+
+```text
+Z = (x - μ) / σ
+```
+
+However, several transaction variables in the dataset exhibited strong right-skewness and extreme observations.
+
+For example, transaction amount, credit amount, debit amount, and transaction volatility contained unusually large values. In such distributions, the mean and standard deviation can themselves be heavily influenced by extreme observations.
+
+To reduce this sensitivity, a **robust Z-score** approach based on the median and Median Absolute Deviation (MAD) was used.
+
+### 7.1 Robust Z-Score Formula
+
+The robust Z-score was calculated conceptually as:
+
+```text
+Robust Z = (x - Median) / (1.4826 × MAD)
+```
+
+where:
+
+* `x` = observation being evaluated
+* `Median` = median of the relevant behavioral distribution
+* `MAD` = Median Absolute Deviation
+* `1.4826` = scaling constant used to make MAD comparable to standard deviation under normality assumptions
+
+The MAD is defined as:
+
+```text
+MAD = Median(|x - Median|)
+```
+
+### 7.2 Why Median and MAD?
+
+Consider a simplified distribution:
+
+```text
+20, 25, 30, 32, 35, 40, 45, 50, 500
+```
+
+The value `500` is substantially larger than the other observations.
+
+The mean and standard deviation would be strongly affected by this extreme value.
+
+The median, however, remains:
+
+```text
+Median = 35
+```
+
+The MAD is:
+
+```text
+MAD = 10
+```
+
+Therefore, for the extreme observation:
+
+```text
+Robust Z = (500 - 35) / (1.4826 × 10)
+         ≈ 31.36
+```
+
+The large robust Z-score clearly indicates that the observation is highly unusual relative to the central behavior of the distribution.
+
+### 7.3 Application to SME Behavioral Analysis
+
+The robust statistical framework was used to quantify how unusual behavioral measures were relative to their historical patterns.
+
+Rather than relying solely on absolute transaction values, the analysis considered behavioral deviation such as:
+
+```text
+Current Behavior
+        ↓
+Historical Behavioral Baseline
+        ↓
+Relative Deviation
+        ↓
+Robust Statistical Measurement
+        ↓
+Anomaly Signal
+```
+
+This was particularly useful for SME analysis because customers can operate at very different scales.
+
+A large transaction is not automatically anomalous simply because its absolute value is high.
+
+The statistical question was instead:
+
+> **How unusual is this behavior relative to the relevant historical behavioral pattern?**
+
+### 7.4 Interpreting Robust Z-Scores
+
+A higher absolute robust Z-score indicates greater statistical deviation from the central behavioral pattern.
+
+The score therefore provided a continuous measure of unusualness that could be used alongside other anomaly signals.
+
+The robust statistical measure was **not treated as proof of fraudulent or suspicious activity**.
+
+Instead, it contributed evidence to an interpretable anomaly framework designed to prioritize relationships for further investigation.
+
+### 7.5 Why This Approach Was Appropriate
+
+The use of median, MAD, and robust deviation measures provided several advantages:
+
+* Reduced sensitivity to extreme observations
+* Better suitability for heavily skewed transaction distributions
+* More stable representation of typical behavior
+* Continuous measurement of behavioral unusualness
+* Greater interpretability than a purely black-box anomaly score
+
+The robust statistical layer therefore formed one component of the broader anomaly detection framework, which was later combined with percentile-based signals, correlation-aware behavioral dimensions, and emergence indicators.
+
+
 
