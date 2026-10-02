@@ -364,3 +364,102 @@ This separation between **SQL data modelling** and **Python statistical analysis
 > **Public Repository Note:** The SQL structure shown here represents the analytical methodology used in the project. Production table names, internal schemas, business-specific filters, proprietary mappings, and other confidential implementation details have been intentionally excluded.
 
 
+## 6. Python/Pandas Analytical Preparation
+
+After the SQL extraction, the analytical datasets were loaded into Python/Pandas for statistical analysis.
+
+The objective at this stage was to transform the account-level monthly observations into a consistent structure suitable for relationship-level behavioral analysis.
+
+### 6.1 Data Consolidation
+
+The two SQL extraction batches were loaded into Pandas and consolidated into a single analytical dataset covering the complete historical period.
+
+The preparation process included:
+
+* Combining the extracted datasets
+* Standardizing data types
+* Validating analytical columns
+* Handling missing or non-applicable values
+* Ensuring monthly observations were correctly represented
+* Preparing relationship and account identifiers for aggregation
+
+### 6.2 Relationship-Level Analytical View
+
+The SQL dataset preserved the analytical grain:
+
+```text
+relationship × account × month × year
+```
+
+For statistical analysis, the required account-level observations were subsequently aggregated to the **relationship level**.
+
+This allowed the framework to evaluate behavioral patterns across the customer's accounts rather than treating every account as an independent customer.
+
+The relationship-level analytical view was then used for:
+
+* Historical behavioral baselines
+* Current-vs-historical comparisons
+* Statistical deviation analysis
+* Correlation analysis
+* Behavioral theme construction
+* Emergence detection
+* Multidimensional anomaly scoring
+
+### 6.3 Historical Behavioral Baselines
+
+For each relationship and behavioral factor, historical observations were used to establish a baseline representing the customer's typical behavior.
+
+The baseline was primarily based on the **historical median**.
+
+The median was selected because several important transaction variables exhibited substantial right-skewness and extreme values.
+
+Using the median reduced the influence of unusually large transactions and provided a more robust representation of typical historical behavior.
+
+### 6.4 Behavioral Deviation
+
+Current-period behavior was compared against the corresponding historical baseline.
+
+Conceptually:
+
+```text
+Historical Behavior
+        ↓
+Customer-Specific Baseline
+        ↓
+Current Behavior
+        ↓
+Behavioral Deviation
+        ↓
+Statistical Anomaly Analysis
+```
+
+Examples of behavioral measures included:
+
+* Transaction count relative to historical activity
+* Credit amount relative to historical behavior
+* Debit amount relative to historical behavior
+* Average transaction amount relative to historical behavior
+* Transaction volatility relative to historical behavior
+
+This transformed the analysis from simply asking:
+
+> "Is this customer large?"
+
+to asking:
+
+> "Is this customer's current behavior unusual relative to its own historical pattern?"
+
+### 6.5 Preparation for Multidimensional Analysis
+
+The resulting relationship-level dataset provided the foundation for the subsequent anomaly framework.
+
+The analysis then combined:
+
+1. **Magnitude** — how large the behavioral deviation was
+2. **Historical deviation** — how unusual it was relative to the customer's baseline
+3. **Behavioral breadth** — how many behavioral dimensions were affected
+4. **Emergence** — whether the behavior represented a newly developing pattern
+
+These components were subsequently combined into an interpretable multidimensional anomaly framework.
+
+
